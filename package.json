@@ -35,7 +35,8 @@
     "through2": "^0.4.1",
     "concat-stream": "^1.4.5",
     "from2": "0.0.0",
-    "digger-utils": "^2.1.0",
-    "reduplexer": "0.0.2"
+    "digger-utils": "^3.0.0",
+    "reduplexer": "0.0.2",
+    "digger-find": "^0.2.1"
   }
 }

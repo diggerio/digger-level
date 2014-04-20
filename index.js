@@ -16,7 +16,7 @@ module.exports = function(leveldb, opts){
 			var path = req.url
 			var selector = req.headers['x-digger-selector']
 			var laststep = req.headers['x-digger-laststep']
-			return db.select(path, selector, laststep ? true : false)
+			return db.select(selector, laststep ? true : false)
 		},
 		// return a duplex-stream
 		// input is data to append to context

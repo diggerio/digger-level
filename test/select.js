@@ -68,6 +68,38 @@ describe('digger-level', function(){
     })
 
 
+
+    it('should load an attribute selector', function(done){
+
+      warehouse('city.south area.poor[name^=S]').ship(function(areas){
+
+        areas.count().should.equal(1)
+        areas.attr('name').should.equal('St. Pauls')
+        
+        done()
+      })
+      
+    })
+
+
+
+/*
+
+    it('should ship tree results as a tree', function(done){
+
+      warehouse('city:tree').ship(function(cities){
+
+        cities.count().should.equal(8)
+        
+        var children = cities.eq(0).children()
+        children.count().should.equal(4)
+
+        done()
+      })
+      
+    })
+*/
+
   })
 
 
