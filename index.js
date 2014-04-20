@@ -10,17 +10,6 @@ module.exports = function(leveldb, opts){
 	var api = {
 		db:db,
 
-		// return a duplex stream where contexts go in and full documents come out
-		transform:function(req){
-			return through.obj(function(chunk, enc, cb){
-				var self = this;
-				db.get(chunk, function(err, doc){
-					if(err) return cb(err)
-					this.push(doc)
-					cb()
-				})
-			})
-		},
 		// return a read-stream
 		// output are the selector results
 		get:function(req){

@@ -12,7 +12,7 @@ function getSelect(db, tree, opts){
 		var query = {}
 		var streamMethod = selector.splitter=='>' ? 'childKeyStream' : 'descendentKeyStream'
 
-		if(selector.tag){
+		if(selector.tag && selector.tag!=='*'){
 			query.tag = selector.tag
 		}
 
@@ -38,14 +38,12 @@ function getSelect(db, tree, opts){
 				this.push(chunk)
 				return cb()
 			}
-
-			db.get(chunk, function(err, doc){
-				console.log('-------------------------------------------');
-				console.dir(doc);
-				self.push(doc)
-				cb()
-			})
-			
+			else{
+				db.get(chunk, function(err, doc){
+					self.push(doc)
+					cb()
+				})
+			}
 		}))
 
 	}
