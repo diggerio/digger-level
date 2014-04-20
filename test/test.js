@@ -37,6 +37,11 @@ describe('digger-level', function(){
 
         warehouse('folder.red').ship(function(folder){
 
+          folder.tag().should.equal('folder')
+          folder.hasClass('red').should.equal(true)
+          folder.path().should.equal('/apples')
+          
+
 
           folder.count().should.equal(1);
           done();
