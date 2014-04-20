@@ -35,7 +35,7 @@ function getSelect(db, tree, opts){
 		return stream.pipe(through.obj(function(chunk, env, cb){
 			var self = this;
 			if(!laststep){
-				this.push(chunk)
+				this.push('/warehouse' + chunk)
 				return cb()
 			}
 			else{

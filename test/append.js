@@ -7,14 +7,14 @@ var diggerlevel = require('../')
 var level    = require('level-test')()
 var sub = require('level-sublevel')
 
-var db = sub(level('level-search--diggerlevel', {encoding: 'json'}))
+var db = sub(level('level-digger--append', {encoding: 'json'}))
 
 
 describe('digger-level', function(){
 
   describe('append', function(){
 
-    it('should append some data', function(done){
+    it('should append some simple data', function(done){
 
       var digger = Server();
       var client = Client();
@@ -50,43 +50,31 @@ describe('digger-level', function(){
 
     })
 
-  })
 
-
-  describe('folders', function(){
-
-    it('should ensure folders for an append', function(done){
+    it('should append a batch of data', function(done){
 
       var digger = Server();
       var client = Client();
-      var warehouse = diggerlevel(db)
 
-      digger.use(warehouse)
-
+      digger.use(diggerlevel(db))
       client.on('request', digger.reception.bind(digger));
 
-      var supplychain = client.connect('/a/b/c/d/e');
+      var warehouse = client.connect('/cities');
 
-      var data = client.create('folder').addClass('red').inode('f')
+      var data = client.create(require(__dirname + '/fixtures/cities.json'))
 
-      supplychain.append(data).ship(function(answers){
+      warehouse.append(data).ship(function(answers){
 
-        warehouse.db.folders('/a/b/c/d/e/f', function(err, folders){
-          if(err) throw err
-          folders.length.should.equal(7)
-          folders[0].path.should.equal('/')
-          folders[1].path.should.equal('/a')
-          folders[2].path.should.equal('/a/b')
-          folders[3].path.should.equal('/a/b/c')
-          folders[4].path.should.equal('/a/b/c/d')
-          folders[5].path.should.equal('/a/b/c/d/e')
-          folders[6].path.should.equal('/a/b/c/d/e/f')
+        warehouse('city').ship(function(cities){
+
+          cities.count().should.equal(8)
           done()
-        })
 
+        })
       })
 
     })
 
   })
+
 })
