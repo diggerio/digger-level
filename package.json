@@ -1,0 +1,31 @@
+{
+  "name": "digger-level",
+  "version": "0.0.0",
+  "description": "Leveldb storage for digger",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diggerio/digger-level.git"
+  },
+  "keywords": [
+    "digger",
+    "leveldb",
+    "level"
+  ],
+  "author": "Kai Davenport",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/diggerio/digger-level/issues"
+  },
+  "homepage": "https://github.com/diggerio/digger-level",
+  "dependencies": {
+    "level-path-index": "0.0.5",
+    "level": "^0.18.0",
+    "through2": "^0.4.1",
+    "concat-stream": "^1.4.5",
+    "from2": "0.0.0"
+  }
+}
