@@ -9,15 +9,25 @@ module.exports = function(leveldb, opts){
 
 	var api = {
 		db:db,
+
+		// return a duplex stream where contexts go in and full documents come out
+		transform:function(req){
+			return through.obj(function(chunk, enc, cb){
+				var self = this;
+				db.get(chunk, function(err, doc){
+					if(err) return cb(err)
+					this.push(doc)
+					cb()
+				})
+			})
+		},
 		// return a read-stream
 		// output are the selector results
 		get:function(req){
-			console.log('-------------------------------------------');
-			console.log('-------------------------------------------');
-			console.log('get');
-			console.dir(req.url);
-			console.dir(req.headers);
-			process.exit();
+			var path = req.url
+			var selector = req.headers['x-digger-selector']
+			var laststep = req.headers['x-digger-laststep']
+			return db.select(path, selector, laststep ? true : false)
 		},
 		// return a duplex-stream
 		// input is data to append to context
@@ -70,18 +80,25 @@ module.exports = function(leveldb, opts){
 		// input is the data to be saved to the context
 		// output is the processed saved data
 		put:function(req){
-			console.log('-------------------------------------------');
-			console.log('-------------------------------------------');
-			console.log('put');
-			console.dir(context);
+			return through.obj(function(chunk, enc, cb){
+				var self = this;
+				db.save(req.url, chunk, function(err, data){
+					if(err) return cb(err)
+					self.push(chunk)
+					cb()
+				})
+			})
 		},
 		// return a read-stream
 		// output is the deleted data
 		delete:function(req){
-			console.log('-------------------------------------------');
-			console.log('-------------------------------------------');
-			console.log('delete');
-			console.dir(context);
+			return from.obj(function(c, next){
+				var self = this;
+				db.remove(req.url, function(err){
+					self.push(null)
+					next(err)
+				})
+			})
 		}
 	}
 

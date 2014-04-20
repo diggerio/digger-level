@@ -17,10 +17,8 @@ function getTree(db, opts){
 		}
 
 		if(digger.id){
-			emit(key, 'tag', digger.tag)
+			emit(key, 'id', digger.tag)
 		}
-
-		emit(key, 'name', value.name)
 	})
 
 	return tree
