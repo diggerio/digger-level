@@ -4,37 +4,8 @@ var concat = require('concat-stream')
 var utils = require('digger-utils')
 
 module.exports = function(db, tree, opts){
-	return {
-		get:getFolders(db, tree, opts),
-		through:throughFolders(db, tree, opts)
-	}
-}
-
-function getFolders(db, tree, opts){
 	return function(path, done){
 		ensure(db, tree, path, done)
-	}
-}
-
-function throughFolders(db, tree, opts){
-	var get = getFolders(db, tree, opts)
-	return function(path){
-		var foldersEnsured = false;
-		return through.obj(function(chunk, enc, cb){
-			var self = this
-			if(!foldersEnsured){
-				get(path, function(err, folders){
-					if(err) return cb(err)
-					foldersEnsured = true
-					self.push(chunk)
-					cb()
-				})
-			}
-			else{
-				self.push(chunk)
-				cb()
-			}
-		})
 	}
 }
 
@@ -102,7 +73,7 @@ function ensure(db, tree, path, done){
 
 		tree.batch(batch, function(err){
 			if(err) return done(err)
-			
+
 			done(null, folders)
 		})
 

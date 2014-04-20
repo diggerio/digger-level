@@ -1,5 +1,6 @@
 var through = require('through2')
 var DB = require('./db')
+var duplexer = require('reduplexer')
 
 module.exports = function(leveldb, opts){
 	opts = opts || {}
@@ -10,30 +11,60 @@ module.exports = function(leveldb, opts){
 		db:db,
 		// return a read-stream
 		// output are the selector results
-		get:function(req, selector){
+		get:function(req){
 			console.log('-------------------------------------------');
 			console.log('-------------------------------------------');
 			console.log('get');
-			console.dir(context);
-			console.dir(selector);
+			console.dir(req.url);
+			console.dir(req.headers);
+			process.exit();
 		},
 		// return a duplex-stream
 		// input is data to append to context
 		// output is the processed appended data
 		post:function(req){
 
-			// ensure the folders that we are appending to
-			return db.folders.through(req.url).pipe(through.obj(function(chunk, enc, cb){
+			// ensure folders means there are entries folder each folder up to '/'
+			var foldersEnsured = false;
+			function ensurefolders(cb){
+				if(foldersEnsured) return cb()
+				foldersEnsured = true
+				db.folders(req.url, cb)
+			}
+
+			// each append model will go through here
+			// we pause to make sure the folders are ensured
+			var input = through.obj(function(chunk, enc, cb){
 				var self = this;
-				// the folders have been ensured
-				// we are adding one model at a time now
+				ensurefolders(function(){
+					self.push(chunk)
+					cb()
+				})
+			})
+
+			// the actual append stream - proxy to the db
+			var append = through.obj(function(chunk, enc, cb){
+				var self = this;
 				db.append(req.url, chunk, function(err, data){
 					if(err) return cb(err)
 					self.push(chunk)
 					cb()
 				})
+			})
 
-			}))
+			// output filter
+			var output = through.obj(function(chunk, enc, cb){
+				this.push(chunk)
+				cb()
+			})
+
+			input.pipe(append).pipe(output)
+
+			var duplex = duplexer(input, output, {
+		    objectMode: true
+		  })
+
+			return duplex
 		},
 		// return a duplex-stream
 		// input is the data to be saved to the context
