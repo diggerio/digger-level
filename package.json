@@ -4,7 +4,7 @@
   "description": "Leveldb storage for digger",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "make test"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,8 @@
     "from2": "0.0.0",
     "digger-utils": "^3.0.0",
     "reduplexer": "0.0.2",
-    "digger-find": "^0.2.1"
+    "digger-find": "^0.2.1",
+    "cascade-stream": "0.0.2",
+    "from2-array": "0.0.2"
   }
 }

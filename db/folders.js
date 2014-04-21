@@ -1,5 +1,5 @@
 var through = require('through2')
-var from = require('from2')
+var from = require('from2-array')
 var concat = require('concat-stream')
 var utils = require('digger-utils')
 
@@ -32,10 +32,9 @@ function ensure(db, tree, path, done){
 		})
 	}
 
-	from.obj(function(size, cb){
-		if(allfolders.length<=0) return this.push(null)
-		cb(null, allfolders.shift())
-	}).pipe(through.obj(function(chunk, enc, cb){
+	from
+	.obj(allfolders)
+	.pipe(through.obj(function(chunk, enc, cb){
 		var self = this;
 
 		db.get(chunk.path, function(err, folder){

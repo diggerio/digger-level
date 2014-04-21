@@ -1,7 +1,4 @@
 var through = require('through2')
-var from = require('from2')
-var concat = require('concat-stream')
-var utils = require('digger-utils')
 
 module.exports = getSave
 

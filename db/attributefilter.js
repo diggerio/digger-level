@@ -31,9 +31,9 @@ function AttributeFilter(tree, selector){
 
 		// apply the filter
 		.pipe(through.obj(function(chunk, enc, cb){
-			if(filterfn(chunk.doc){
+			if(filterfn(chunk.doc)){
 				this.push(chunk.path + '/')
-			})
+			}
 			cb()
 		}))
 

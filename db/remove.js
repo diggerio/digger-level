@@ -1,11 +1,8 @@
 var through = require('through2')
-var from = require('from2')
-var concat = require('concat-stream')
-var utils = require('digger-utils')
 
-module.exports = getSave
+module.exports = getRemove
 
-function getSave(db, tree, opts){
+function getRemove(db, tree, opts){
 	return function(context, model, done){
 		console.log('-------------------------------------------');
 		console.log('remove');
