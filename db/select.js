@@ -1,5 +1,5 @@
 var through = require('through2')
-var cascade = require('cascade-stream')
+var cascade = require('group-cascade-stream')
 var duplexer = require('reduplexer')
 
 var AttrFilter = require('./attributefilter')
@@ -45,7 +45,10 @@ function getSelect(db, tree, opts){
 			console.log('have data in the search streeam');
 			console.dir(chunk);
 			this.push({
-				name:'test'
+				name:'test',
+				_digger:{
+					tag:'dfdf'
+				}
 			})
 			cb()
 		}, function(){

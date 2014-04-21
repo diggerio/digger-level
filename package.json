@@ -39,6 +39,7 @@
     "reduplexer": "0.0.2",
     "digger-find": "^0.2.1",
     "cascade-stream": "0.0.2",
-    "from2-array": "0.0.2"
+    "from2-array": "0.0.2",
+    "group-cascade-stream": "0.0.2"
   }
 }
