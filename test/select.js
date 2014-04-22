@@ -39,8 +39,10 @@ describe('digger-level', function(){
     })
   })
 
+  
+
   describe('select', function(){
- 
+
     it('should select a multistep but simple selector', function(done){
 
       var selstart = new Date().getTime()
@@ -105,22 +107,22 @@ describe('digger-level', function(){
       
     })
 
-/*
-
     it('should ship tree results as a tree', function(done){
+      var selstart = new Date().getTime()
+      warehouse('country[name^=U] city.south:tree').ship(function(cities){
 
-      warehouse('city:tree').ship(function(cities){
+        var end = new Date().getTime()
+        console.log('query: ' + (end-selstart));
 
-        cities.count().should.equal(8)
-        
-        var children = cities.eq(0).children()
-        children.count().should.equal(4)
+        cities.count().should.equal(2)
+        cities.children().count().should.equal(7)
+        cities.children().eq(3).tag().should.equal('area')
 
         done()
       })
       
     })
-*/
+
 
   })
 

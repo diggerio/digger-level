@@ -4,18 +4,13 @@ module.exports = LoadDocuments
 
 function LoadDocuments(tree, laststep){
 
-	var filter = through.obj()
-	
 	if(!laststep){
-		return filter
+		return through.obj()
 	}
-
-	return through.obj(function(chunk, add, cb){
+	
+	// mapper onto documents
+	return through.obj(function(chunk, enc, cb){
 		var self = this;
-		if(typeof(chunk)!=='string'){
-			this.push(chunk)
-			return cb()
-		}
 		tree._db.get(chunk, function(err, doc){
 			if(doc){
 				self.push(doc)
@@ -23,5 +18,4 @@ function LoadDocuments(tree, laststep){
 			cb()
 		})
 	})
-
 }

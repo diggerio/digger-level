@@ -17,12 +17,12 @@ function getSelect(db, tree, opts){
 		var queryfactory = Query(tree, selector, laststep)
 
 		var attr = AttrFilter(tree, selector)
-		var loadtree = through.obj()
 		var docs = LoadDocuments(tree, laststep)
+		var loadtree = TreeCascade(tree, selector, laststep)
 
-		attr.pipe(loadtree).pipe(docs)
+		attr.pipe(docs).pipe(loadtree)
 
-		var filter = duplexer(attr, docs, {
+		var filter = duplexer(attr, loadtree, {
 			objectMode:true
 		})
 
