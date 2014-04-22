@@ -7,21 +7,32 @@ module.exports = AttributeFilter
 function AttributeFilter(tree, selector){
 
 	if(!selector.attr || selector.attr.length<=0){
-		return through.obj()
+		return function(){
+			return through.obj()
+		}
 	}
 
 	var filterfn = Find.compile({
 		attr:selector.attr
 	})
 
-	return through.obj(function(chunk, enc, cb){
+	function filter(chunk, enc, cb){
 		var self = this;
+		console.log('attr');
+		console.dir(chunk);
 		tree._db.get(chunk, function(err, doc){
 			if(err) return cb(err)
+				console.dir(doc);
 			if(filterfn(doc)){
+				console.log('-------------------------------------------');
+				console.log('pass');
 				self.push(chunk)
 			}
 			cb()
 		})
-	})
+	}
+
+	return function(){
+		return through.obj(filter)	
+	}
 }

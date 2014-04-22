@@ -9,10 +9,12 @@ function TreeCascade(tree, selector, laststep){
 	var filter = through.obj()
 	
 	if(!selector.modifier || !selector.modifier.tree || !laststep){
-		return filter
+		return function(){
+			return through.obj()
+		}
 	}
 
-	return through.obj(function(chunk, enc, nextinput){
+	function filter(chunk, enc, nextinput){
 		var self = this;
 		var loadFrom = chunk._digger.path + '/' + chunk._digger.inode
 		tree.descendentStream(loadFrom).pipe(through.obj(function(chunk, enc, cb){
@@ -21,5 +23,9 @@ function TreeCascade(tree, selector, laststep){
 		}, function(){
 			nextinput()
 		}))
-	})
+	}
+
+	return function(){
+		return through.obj(filter)	
+	}
 }

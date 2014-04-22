@@ -39,9 +39,9 @@ describe('digger-level', function(){
     })
   })
 
-  
-
   describe('select', function(){
+
+  /*
 
     it('should select a multistep but simple selector', function(done){
 
@@ -114,15 +114,57 @@ describe('digger-level', function(){
         var end = new Date().getTime()
         console.log('query: ' + (end-selstart));
 
-        cities.count().should.equal(2)
-        cities.children().count().should.equal(7)
-        cities.children().eq(3).tag().should.equal('area')
+        cities.count().should.equal(9)
+        
+        var tree = cities.tree()
+        tree.count().should.equal(2)
+        tree.children().count().should.equal(7)
+        tree.children().eq(3).tag().should.equal('area')
 
         done()
       })
       
     })
 
+
+    it('should handle multiple phases', function(done){
+      var selstart = new Date().getTime()
+      warehouse('country[name^=S],country[name^=U] city.north area,city.south[name^=L] area.poor').ship(function(results){
+
+        var end = new Date().getTime()
+        console.log('query: ' + (end-selstart));
+
+        results.count().should.equal(5)
+        results.find('area').count().should.equal(4)
+        results.find('country[name^=S]').count().should.equal(1)
+        
+        results.each(function(r){
+          console.log(r.attr('name'))
+        })
+        
+        done()
+      })
+      
+    })
+
+
+*/
+
+
+
+    it('should do a 3 step selector', function(done){
+      var selstart = new Date().getTime()
+      warehouse('country[name^=U] city.south area'/* city[name^=B] area[name^=W]*/).ship(function(results){
+
+        var end = new Date().getTime()
+        console.log('query: ' + (end-selstart));
+
+        console.dir(results.models);
+        
+        done()
+      })
+      
+    })
 
   })
 
