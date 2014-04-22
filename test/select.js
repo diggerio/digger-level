@@ -18,7 +18,7 @@ describe('digger-level', function(){
   digger.use(diggerlevel(db))
   client.on('request', digger.reception.bind(digger))
 
-  var start = new Date().getTime()
+  var mainstart = new Date().getTime()
 
   var warehouse = client.connect('/cities')
 
@@ -43,12 +43,19 @@ describe('digger-level', function(){
  
     it('should select a multistep but simple selector', function(done){
 
+      var selstart = new Date().getTime()
       warehouse('city.red area.blue').ship(function(areas){
 
-        console.log('-------------------------------------------');
-        console.log('-------------------------------------------');
-        console.log('FINAL');
-        console.dir(areas.models);
+        var end = new Date().getTime()
+
+
+        console.log('all: ' + (end-mainstart));
+        console.log('query: ' + (end-selstart));
+
+        areas.count().should.equal(2)
+        areas.tag().should.equal('area')
+        areas.hasClass('blue').should.equal(true)
+        
         done()
         /*
         areas.count().should.equal(14)
