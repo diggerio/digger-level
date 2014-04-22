@@ -96,7 +96,8 @@
                             "tag": "city",
                             "inode":"London",
                             "class": [
-                                "south"
+                                "south",
+                                "red"
                             ],
                             "id": "",
                             "diggerid": ""

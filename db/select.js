@@ -18,16 +18,73 @@ function getSelect(db, tree, opts){
 		var query = Query(tree, selector, laststep)
 
 		var filter = AttrFilter(tree, selector)
-			.pipe(TreeCascade(tree, selector, laststep))
+			//.pipe(TreeCascade(tree, selector, laststep))
 			.pipe(LoadDocuments(tree, laststep))
 
 		return function(path){
-			return query(path)//.pipe(filter)
+			return query(path)
+				.pipe(AttrFilter(tree, laststep))
+				.pipe(LoadDocuments(tree, laststep))
 		}
 
 
+/*
+		return duplexer(input, output, {
+			objectMode:true
+		})*/
+
 
 		/*
+
+
+
+
+		var inputopen = true
+		var warehousesopen = 0
+		var warehouses = {}
+		
+		var output = through.obj()
+
+		var input = through.obj(function(chunk, enc, nextid){
+
+			console.log('-------------------------------------------');
+			console.dir('input: ' + chunk);
+			console.dir(selector.tag);
+			var warehouseid = api.warehouse.resolve(chunk)
+
+			var warehouse = warehouses[warehouseid]
+			if(!warehouse){
+				warehouse = warehouses[warehouseid] = warehouseQueryFactory(warehouseid, selector, laststep)
+				warehousesopen++
+			}
+
+			var stream = warehouse(chunk)
+
+			stream.pipe(output, {end:false})
+
+			stream.on('end', function(){
+				warehousesopen--
+				if(!inputopen && warehousesopen<=0){
+					console.log('-------------------------------------------');
+					console.log('warehouse end');
+					output.push()
+				}
+				
+			})
+
+			nextid()
+
+		}, function(){
+			inputopen = false
+		})
+
+		return duplexer(input, output, {
+			objectMode:true
+		})
+
+
+
+
 
 		return cascade.obj(function(containerpath, add, next){
 			console.log('-------------------------------------------');
