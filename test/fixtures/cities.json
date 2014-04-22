@@ -24,8 +24,11 @@
                         "_digger": {
                             "tag": "city",
                             "class": [
-                                "south"
+                                "south",
+                                "red"
+
                             ],
+                            "inode":"bristol",
                             "id": "",
                             "diggerid": ""
                         },
@@ -34,8 +37,10 @@
                                 "_digger": {
                                     "tag": "area",
                                     "class": [
-                                        "poor"
+                                        "poor",
+                                        "blue"
                                     ],
+                                    "inode":"pauls",
                                     "id": "",
                                     "diggerid": ""
                                 },
@@ -89,6 +94,7 @@
                     {
                         "_digger": {
                             "tag": "city",
+                            "inode":"London",
                             "class": [
                                 "south"
                             ],
@@ -98,9 +104,11 @@
                         "_children": [
                             {
                                 "_digger": {
+                                    "inode":"westminster",
                                     "tag": "area",
                                     "class": [
-                                        "rich"
+                                        "rich",
+                                        "blue"
                                     ],
                                     "id": "",
                                     "diggerid": ""

@@ -1,3 +1,6 @@
+var through = require('through2');
+var duplexer = require('reduplexer')
+
 module.exports = Query
 
 function Query(tree, selector, laststep){
@@ -26,6 +29,7 @@ function Query(tree, selector, laststep){
 	}
 
 	return function(path){
+		path = path.replace(/^\/warehouse/, '')		
 		return tree[streamMethod].apply(tree, [path, query])
 	}
 }

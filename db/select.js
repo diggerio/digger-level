@@ -1,10 +1,12 @@
 var through = require('through2')
-var cascade = require('group-cascade-stream')
+var cascade = require('cascade-stream')
 var duplexer = require('reduplexer')
 
 var AttrFilter = require('./attributefilter')
 var TreeCascade = require('./treecascade')
 var LoadDocuments = require('./loaddocuments')
+
+var from = require('from2-array')
 
 var Query = require('./query')
 
@@ -15,28 +17,61 @@ function getSelect(db, tree, opts){
 
 		var query = Query(tree, selector, laststep)
 
-		// the results will be piped through here
-		var output = through.obj()
+		var filter = AttrFilter(tree, selector)
+			.pipe(TreeCascade(tree, selector, laststep))
+			.pipe(LoadDocuments(tree, laststep))
 
-		console.log('-------------------------------------------');
-		console.dir('make stream');
-		console.dir(selector);
+		return function(path){
+			return query(path)//.pipe(filter)
+		}
 
-		// the source is a cascade stream of the original selector results
-		// one stream trigger per input and multiple results per stream
+
+
 		/*
-		var input = cascade.obj(function(chunk, add, next){
 
+		return cascade.obj(function(containerpath, add, next){
+			console.log('-------------------------------------------');
+			console.dir(containerpath);
+			add(query(containerpath))
+			next()
+		}, function(){
+			console.log('-------------------------------------------');
+			console.log('-------------------------------------------');
+			console.log('FINISH');
+		})
+
+
+		return through.obj(function(chunk, enc, cb){
 			console.log('-------------------------------------------');
 			console.log('input');
 			console.dir(chunk);
-			console.dir(selector);
-			process.exit();
-			add(query(chunk))
-			next()
+			this.push({
+				name:'test'
+			})
+			cb()
 		})
 
-		return input*/
+
+		// the results will be piped through here
+		var output = through.obj()
+		// the source is a cascade stream of the original selector results
+		// one stream trigger per input and multiple results per stream
+		
+		var input = cascade.obj(function(containerpath, add, next){
+			console.log('-------------------------------------------');
+			console.log('input the selector chain');
+			console.dir(containerpath);
+			add(query(containerpath))
+			//next()
+		})
+
+		input.pipe(output)
+
+		return duplexer(input, output, {
+			objectMode:true
+		})
+
+
 
 		return through.obj(function(chunk, enc, cb){
 
