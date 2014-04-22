@@ -12,6 +12,10 @@ function LoadDocuments(tree, laststep){
 
 	return through.obj(function(chunk, add, cb){
 		var self = this;
+		if(typeof(chunk)!=='string'){
+			this.push(chunk)
+			return cb()
+		}
 		tree._db.get(chunk, function(err, doc){
 			if(doc){
 				self.push(doc)

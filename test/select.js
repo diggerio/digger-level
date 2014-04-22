@@ -57,18 +57,16 @@ describe('digger-level', function(){
         areas.hasClass('blue').should.equal(true)
         
         done()
-        /*
-        areas.count().should.equal(14)
-        areas.eq(4).tag().should.equal('area')
-        done()*/
       })
       
     })
-/*
+
     it('should select a multistep with class selectors', function(done){
 
+      var selstart = new Date().getTime()
       warehouse('city.south area.poor').ship(function(areas){
-
+        var end = new Date().getTime()
+        console.log('query: ' + (end-selstart));
 
         areas.count().should.equal(3)
         areas.eq(2).tag().should.equal('area')
@@ -80,10 +78,13 @@ describe('digger-level', function(){
 
 
     it('should stream results', function(done){
-
+      var selstart = new Date().getTime()
       warehouse('city.south area.poor').stream().pipe(concat(function(areas){
-
+        var end = new Date().getTime()
+        console.log('query: ' + (end-selstart));
+        
         areas.length.should.equal(3);
+
         
         done()
       }))
@@ -103,8 +104,6 @@ describe('digger-level', function(){
       })
       
     })
-
-*/
 
 /*
 
