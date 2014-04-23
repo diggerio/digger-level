@@ -10,7 +10,7 @@ var sub = require('level-sublevel')
 var db = sub(level('level-digger--append', {encoding: 'json'}))
 
 
-describe('digger-level', function(){
+describe('digger-level append', function(){
 
   describe('append', function(){
 

@@ -10,7 +10,7 @@ var sub = require('level-sublevel')
 var db = sub(level('level-digger--select', {encoding: 'json'}))
 
 
-describe('digger-level', function(){
+describe('digger-level select', function(){
 
   var digger = Server()
   var client = Client()
@@ -40,7 +40,6 @@ describe('digger-level', function(){
   })
 
   describe('select', function(){
-
 
     it('should select a multistep but simple selector', function(done){
 
@@ -171,13 +170,81 @@ describe('digger-level', function(){
         var end = new Date().getTime()
         console.log('query: ' + (end-selstart));
 
-        console.dir(results.models);
-
+        results.count().should.equal(2)
 
         done()
       })
       
     })
+
+
+
+    it('should do a query from multiple inputs', function(done){
+      
+      warehouse('country').ship(function(countries){
+        countries('city').ship(function(cities){
+          cities.count().should.equal(8)
+          done()
+        })
+      })
+      
+    })
+
+
+
+    it('should do a query from multiple inputs (2)', function(done){
+      
+      warehouse('city').ship(function(cities){
+        cities.count().should.equal(8)
+        cities('area').ship(function(areas){
+          areas.count().should.equal(14)
+          done()
+        })
+      })
+      
+    })
+
+
+    it('should do a query from a simple context', function(done){
+      
+      warehouse('area', 'country[name^=S] city').ship(function(area){
+        area.count().should.equal(2)
+        area.tag().should.equal('area')
+        done()
+      })
+      
+    })
+
+
+    it('should do a query for contexts with phases', function(done){
+      
+      warehouse('city.north', 'country[name^=S], country[name^=U]').ship(function(cities){
+        cities.count().should.equal(3)
+        done()
+      })
+      
+    })
+
+    it('should do a query for direct children', function(done){
+      
+      warehouse('country[name^=S] > city').ship(function(cities){
+        cities.count().should.equal(2)
+        done()
+      })
+      
+    })
+
+
+    it('should do a triple step query for direct children', function(done){
+      
+      warehouse('country[name^=S] > city > area').ship(function(areas){
+        areas.count().should.equal(2)
+        done()
+      })
+      
+    })
+
+
 
   })
 

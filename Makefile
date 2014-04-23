@@ -7,6 +7,6 @@ test:
 	--timeout 300 \
 	--require should \
 	--growl \
-	test/select.js
+	test/*.js
 
 .PHONY: test install

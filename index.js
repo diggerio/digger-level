@@ -27,25 +27,12 @@ module.exports = function(leveldb, opts){
 		// input is the data to be saved to the context
 		// output is the processed saved data
 		put:function(req){
-			return through.obj(function(chunk, enc, cb){
-				var self = this;
-				db.save(req.url, chunk, function(err, data){
-					if(err) return cb(err)
-					self.push(chunk)
-					cb()
-				})
-			})
+			return db.save(req)
 		},
 		// return a read-stream
 		// output is the deleted data
 		delete:function(req){
-			return from.obj(function(c, next){
-				var self = this;
-				db.remove(req.url, function(err){
-					self.push(null)
-					next(err)
-				})
-			})
+			return db.remove(req)
 		}
 	}
 

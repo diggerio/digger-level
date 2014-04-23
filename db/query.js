@@ -34,6 +34,13 @@ function Query(tree, selector, laststep){
 	var docs = LoadDocuments(tree, selector, laststep)
 
 	return function(path){
+		if(typeof(path)!=='string'){
+			
+			console.log('-------------------------------------------');
+			console.log('-------------------------------------------');
+			console.dir(path);
+			throw new Error('no poath')
+		}
 		path = path.replace(/^\/warehouse/, '')		
 		return tree[streamMethod].apply(tree, [path, query])
 			.pipe(attr())

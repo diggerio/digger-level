@@ -10,7 +10,7 @@ var sub = require('level-sublevel')
 var db = sub(level('level-digger--folders', {encoding: 'json'}))
 
 
-describe('digger-level', function(){
+describe('digger-level folders', function(){
 
   describe('folders', function(){
 
