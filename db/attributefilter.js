@@ -18,14 +18,9 @@ function AttributeFilter(tree, selector){
 
 	function filter(chunk, enc, cb){
 		var self = this;
-		console.log('attr');
-		console.dir(chunk);
 		tree._db.get(chunk, function(err, doc){
 			if(err) return cb(err)
-				console.dir(doc);
-			if(filterfn(doc)){
-				console.log('-------------------------------------------');
-				console.log('pass');
+			if(filterfn(doc)){				
 				self.push(chunk)
 			}
 			cb()

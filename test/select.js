@@ -41,7 +41,6 @@ describe('digger-level', function(){
 
   describe('select', function(){
 
-  /*
 
     it('should select a multistep but simple selector', function(done){
 
@@ -107,25 +106,6 @@ describe('digger-level', function(){
       
     })
 
-    it('should ship tree results as a tree', function(done){
-      var selstart = new Date().getTime()
-      warehouse('country[name^=U] city.south:tree').ship(function(cities){
-
-        var end = new Date().getTime()
-        console.log('query: ' + (end-selstart));
-
-        cities.count().should.equal(9)
-        
-        var tree = cities.tree()
-        tree.count().should.equal(2)
-        tree.children().count().should.equal(7)
-        tree.children().eq(3).tag().should.equal('area')
-
-        done()
-      })
-      
-    })
-
 
     it('should handle multiple phases', function(done){
       var selstart = new Date().getTime()
@@ -148,19 +128,52 @@ describe('digger-level', function(){
     })
 
 
-*/
-
-
-
     it('should do a 3 step selector', function(done){
       var selstart = new Date().getTime()
-      warehouse('country[name^=U] city.south area'/* city[name^=B] area[name^=W]*/).ship(function(results){
+      warehouse('country[name^=U] city.south area').ship(function(results){
+
+        var end = new Date().getTime()
+        console.log('query: ' + (end-selstart));
+
+        results.count().should.equal(7)
+        done()
+
+      })
+      
+    })
+
+
+
+    it('should ship tree results as a tree', function(done){
+      var selstart = new Date().getTime()
+      warehouse('country[name^=U] city.south:tree').ship(function(cities){
+
+        var end = new Date().getTime()
+        console.log('query: ' + (end-selstart));
+
+        cities.count().should.equal(9)
+        
+        var tree = cities.tree()
+        tree.count().should.equal(2)
+        tree.children().count().should.equal(7)
+        tree.children().eq(3).tag().should.equal('area')
+
+        done()
+      })
+      
+    })
+
+
+    it('should not have duplicates in the results', function(done){
+      var selstart = new Date().getTime()
+      warehouse('country[name^=U], country').ship(function(results){
 
         var end = new Date().getTime()
         console.log('query: ' + (end-selstart));
 
         console.dir(results.models);
-        
+
+
         done()
       })
       
