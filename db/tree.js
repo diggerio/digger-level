@@ -1,5 +1,4 @@
 var pathindex = require('level-path-index')
-var utils = require('digger-utils')
 
 module.exports = getTree
 

@@ -25,21 +25,17 @@
     "mocha": "~1.14.0",
     "should": "~2.1.0",
     "digger-client": "^2.1.2",
-    "through2": "^0.4.1",
     "level-test": "^1.6.2",
-    "level-sublevel": "^5.2.0"
+    "level-sublevel": "^5.2.0",
+    "digger-server": "^0.0.3"
   },
   "dependencies": {
-    "level-path-index": "0.0.5",
-    "level": "^0.18.0",
+    "level-path-index": "^0.0.5",
     "through2": "^0.4.1",
     "concat-stream": "^1.4.5",
-    "from2": "0.0.0",
-    "digger-utils": "^3.0.0",
-    "reduplexer": "0.0.2",
+    "reduplexer": "^0.0.2",
     "digger-find": "^0.2.1",
-    "cascade-stream": "0.0.2",
-    "from2-array": "0.0.2",
-    "group-cascade-stream": "0.0.2"
+    "digger-utils": "^3.0.0",
+    "from2-array": "^0.0.2"
   }
 }

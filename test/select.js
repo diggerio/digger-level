@@ -31,7 +31,7 @@ describe('digger-level select', function(){
 
       db.createReadStream().pipe(concat(function(vs){
         vs.forEach(function(e){
-          console.dir(e.key);
+          //console.dir(e.key);
         })
         done()
       }))
@@ -90,7 +90,6 @@ describe('digger-level select', function(){
       }))
       
     })
-
 
 
     it('should load an attribute selector', function(done){
@@ -243,7 +242,6 @@ describe('digger-level select', function(){
       })
       
     })
-
 
 
   })

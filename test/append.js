@@ -1,6 +1,5 @@
 var Server = require('digger-server')
 var Client = require('digger-client')
-var concat = require('concat-stream')
 var Folders = require('../db/folders')
 var diggerlevel = require('../')
 
