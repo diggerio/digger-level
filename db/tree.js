@@ -11,6 +11,10 @@ function getTree(db, opts){
 			emit(key, 'class', c)
 		})
 
+		if(digger.diggerid){
+			emit(key, 'diggerid', digger.diggerid)
+		}
+
 		if(digger.tag){
 			emit(key, 'tag', digger.tag)
 		}

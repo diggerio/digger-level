@@ -1,42 +1,25 @@
-var through = require('through2')
-var DB = require('./db')
-var duplexer = require('reduplexer')
+var getTree = require('./db/tree')
+var folders = require('./db/folders')
+var getSelect = require('./db/select')
+var getLoad = require('./db/load')
+var getAppend = require('./db/append')
+var getSave = require('./db/save')
+var getRemove = require('./db/remove')
+var EventEmitter = require('events').EventEmitter
 
-module.exports = function(leveldb, opts){
+module.exports = function(db, opts){
 	opts = opts || {}
-
-	var db = DB(leveldb, opts)
-
-	var api = {
-		db:db,
-
-		// return a read-stream
-		// output are the selector results
-		get:function(req){
-			var selector = req.headers['x-digger-selector']
-			var laststep = req.headers['x-digger-laststep']
-			return db.select(selector, laststep ? true : false)
-		},
-		// return a duplex-stream
-		// input is data to append to context
-		// output is the processed appended data
-		post:function(req){
-			return db.append(req)
-		},
-		// return a duplex-stream
-		// input is the data to be saved to the context
-		// output is the processed saved data
-		put:function(req){
-			return db.save(req)
-		},
-		// return a read-stream
-		// output is the deleted data
-		delete:function(req){
-			return db.remove(req)
-		}
-	}
-
-	return api;
-
 	
+	// tree is a level-path-index object
+	var tree = getTree(db, opts)
+
+	var api = new EventEmitter()
+
+	api.select = getSelect(db, tree, opts)
+	api.append = getAppend(db, tree, opts)
+	api.save = getSave(db, tree, opts)
+	api.remove = getRemove(db, tree, opts)
+	api.folders = folders(db, tree, opts)
+	
+	return api	
 }

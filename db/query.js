@@ -20,6 +20,17 @@ function Query(tree, selector, laststep){
 		query.id = selector.id
 	}
 
+	var diggerpath = null
+
+	if(selector.diggerid){
+		if(selector.diggerid.indexOf('/')==0){
+			diggerpath = selector.diggerid
+		}
+		else{
+			query.diggerid = selector.diggerid	
+		}
+	}
+
 	var classnames = Object.keys(selector.class || {})
 
 	if(classnames.length){
@@ -37,9 +48,24 @@ function Query(tree, selector, laststep){
 		if(typeof(path)!=='string'){
 			return 'path is not a string'
 		}
-//		path = path.replace(/^\/warehouse/, '')		
-		return tree[streamMethod].apply(tree, [path, query])
-			.pipe(attr())
-			.pipe(docs())
+
+		if(diggerpath){
+			var stream = through.obj()
+			tree._db.get(path + diggerpath, function(err, doc){
+				if(err){
+					stream.emit('error', err)
+				}
+				else{
+					stream.write(doc)	
+				}
+				stream.end()
+			})
+			return stream
+		}
+		else{
+			return tree[streamMethod].apply(tree, [path, query])
+				.pipe(attr())
+				.pipe(docs())
+		}
 	}
 }
