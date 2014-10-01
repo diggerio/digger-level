@@ -35,13 +35,9 @@ function Query(tree, selector, laststep){
 
 	return function(path){
 		if(typeof(path)!=='string'){
-			
-			console.log('-------------------------------------------');
-			console.log('-------------------------------------------');
-			console.dir(path);
-			throw new Error('no poath')
+			return 'path is not a string'
 		}
-		path = path.replace(/^\/warehouse/, '')		
+//		path = path.replace(/^\/warehouse/, '')		
 		return tree[streamMethod].apply(tree, [path, query])
 			.pipe(attr())
 			.pipe(docs())

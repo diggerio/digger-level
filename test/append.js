@@ -32,6 +32,9 @@ describe('digger-level append', function(){
 
       data.append(sub1)
 
+      var otherdata = client.create('folder').addClass('blue').inode('/blue')      
+      data.add(otherdata)
+
       warehouse.append(data).ship(function(answers){
 
         warehouse('folder.red').ship(function(folder){

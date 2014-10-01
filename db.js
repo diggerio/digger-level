@@ -8,6 +8,7 @@ var getRemove = require('./db/remove')
 module.exports = function(db, opts){
 	opts = opts || {}
 	
+	// tree is a level-path-index object
 	var tree = getTree(db, opts)
 
 	var api = {
