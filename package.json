@@ -27,7 +27,7 @@
     "digger-client": "^2.1.2",
     "level-test": "^1.6.2",
     "level-sublevel": "^5.2.0",
-    "digger-server": "^0.0.3"
+    "digger-server": "^1.0.0"
   },
   "dependencies": {
     "level-path-index": "^0.0.5",

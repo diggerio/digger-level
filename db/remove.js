@@ -7,16 +7,13 @@ function getRemove(db, tree, opts){
 
 		return through.obj(function(chunk, enc, cb){
 			var self = this;
-			if(chunk._digger.path + '/' + chunk._digger.inode != req.url){
-				return cb('URL error ' + chunk._digger.path + '/' + chunk._digger.inode + ' vs ' + req.url)
-			}
 
-			var parts = req.url.split('/')
+			var parts = chunk.split('/')
 			var inode = parts.pop()
 			var path = parts.join('/')
 
 			var ids = []
-			tree.descendentKeyStream(req.url).pipe(through.obj(function(d, enc, dcb){
+			tree.descendentKeyStream(chunk).pipe(through.obj(function(d, enc, dcb){
 				ids.push(d)
 				dcb()
 			}, function(){

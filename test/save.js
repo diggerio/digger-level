@@ -15,7 +15,7 @@ describe('digger-level save', function(){
   var digger = Server()
   var client = Client()
   
-  digger.use(diggerlevel(db))
+  digger.warehouse(diggerlevel(db))
   client.on('request', digger.reception.bind(digger))
 
   var mainstart = new Date().getTime()

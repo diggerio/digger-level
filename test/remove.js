@@ -15,9 +15,12 @@ describe('digger-level remove', function(){
   var digger = Server()
   var client = Client()
   
-  digger.use(diggerlevel(db))
+  digger.warehouse(diggerlevel(db))
   client.on('request', digger.reception.bind(digger))
 
+  digger.on('request', function(type, req){
+    
+  })
   var mainstart = new Date().getTime()
 
   var warehouse = client.connect('/cities')
@@ -45,6 +48,7 @@ describe('digger-level remove', function(){
     it('should remove with all descendents', function(done){
 
       warehouse('country[name^=U]').ship(function(country){
+
         country.remove().ship(function(){
           warehouse('city').ship(function(cities){
             cities.count().should.equal(2)

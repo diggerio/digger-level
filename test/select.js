@@ -15,7 +15,7 @@ describe('digger-level select', function(){
   var digger = Server()
   var client = Client()
   
-  digger.use(diggerlevel(db))
+  digger.warehouse(diggerlevel(db))
   client.on('request', digger.reception.bind(digger))
 
   var mainstart = new Date().getTime()
@@ -48,9 +48,8 @@ describe('digger-level select', function(){
 
         var end = new Date().getTime()
 
-
-        console.log('all: ' + (end-mainstart));
-        console.log('query: ' + (end-selstart));
+        console.log('time all(ms): ' + (end-mainstart));
+        console.log('tiem query(ms): ' + (end-selstart));
 
         areas.count().should.equal(2)
         areas.tag().should.equal('area')
@@ -242,7 +241,6 @@ describe('digger-level select', function(){
       })
       
     })
-
 
   })
 

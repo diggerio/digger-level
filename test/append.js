@@ -18,7 +18,7 @@ describe('digger-level append', function(){
       var digger = Server();
       var client = Client();
 
-      digger.use(diggerlevel(db))
+      digger.warehouse(diggerlevel(db))
 
       client.on('request', digger.reception.bind(digger));
 
@@ -35,7 +35,9 @@ describe('digger-level append', function(){
       var otherdata = client.create('folder').addClass('blue').inode('/blue')      
       data.add(otherdata)
 
-      warehouse.append(data).ship(function(answers){
+      warehouse.append(data).ship(function(appended){
+
+        appended.models.length.should.equal(2)
 
         warehouse('folder.red').ship(function(folder){
 
@@ -58,7 +60,7 @@ describe('digger-level append', function(){
       var digger = Server();
       var client = Client();
 
-      digger.use(diggerlevel(db))
+      digger.warehouse(diggerlevel(db))
       client.on('request', digger.reception.bind(digger));
 
       var warehouse = client.connect('/cities');

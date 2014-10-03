@@ -19,7 +19,7 @@ describe('digger-level folders', function(){
       var client = Client();
       var warehouse = diggerlevel(db)
 
-      digger.use(warehouse)
+      digger.warehouse(warehouse)
 
       client.on('request', digger.reception.bind(digger));
 
@@ -29,7 +29,7 @@ describe('digger-level folders', function(){
 
       supplychain.append(data).ship(function(answers){
 
-        warehouse.db.folders('/a/b/c/d/e/f', function(err, folders){
+        warehouse.folders('/a/b/c/d/e/f', function(err, folders){
           if(err) throw err
           folders.length.should.equal(7)
           folders[0].path.should.equal('/')

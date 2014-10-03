@@ -1,7 +1,6 @@
 var getTree = require('./db/tree')
 var folders = require('./db/folders')
 var getSelect = require('./db/select')
-var getLoad = require('./db/load')
 var getAppend = require('./db/append')
 var getSave = require('./db/save')
 var getRemove = require('./db/remove')
