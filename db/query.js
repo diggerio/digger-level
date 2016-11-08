@@ -49,6 +49,7 @@ function Query(tree, selector, laststep){
 			return 'path is not a string'
 		}
 
+		// this is load a single thing based on the path
 		if(diggerpath){
 			var stream = through.obj()
 			tree._db.get(path + diggerpath, function(err, doc){

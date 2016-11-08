@@ -10,34 +10,28 @@ module.exports = function(db, tree, opts){
 }
 
 function ensure(db, tree, path, done){
-	var parts = path.split('/')
 
-	var allfolders = []
-
-	while(parts.length>0){
-		var p = parts.join('/')
-		var name = parts.pop()
-
-		if(!p || !p.length){
-			p = '/'
-		}
-
-		if(!name || !name.length){
-			name = 'root'
-		}
-
-		allfolders.unshift({
-			path:p,
-			name:name
-		})
-	}
+	var partBuffer = []
+	var allfolders = 
+		path
+			.replace(/^\//, '')
+			.replace(/\/$/, '')
+			.split('/')
+			.map(function(name){
+				var part = {
+					path:'/' + partBuffer.join('/'),
+					name:name
+				}
+				partBuffer.push(name)
+				return part
+			})
 
 	from
 	.obj(allfolders)
 	.pipe(through.obj(function(chunk, enc, cb){
 		var self = this;
 
-		db.get(chunk.path, function(err, folder){
+		db.get(chunk.path + '/' + chunk.name, function(err, folder){
 			if(!folder) {
 				chunk.folder = {
 					name:chunk.name,
@@ -65,7 +59,7 @@ function ensure(db, tree, path, done){
 
 			return {
 				type:'put',
-				key:f.folder._digger.path,
+				key:f.folder._digger.path + '/' + f.folder._digger.inode,
 				value:f.folder
 			}
 		})

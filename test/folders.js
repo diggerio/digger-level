@@ -31,14 +31,14 @@ describe('digger-level folders', function(){
 
         warehouse.folders('/a/b/c/d/e/f', function(err, folders){
           if(err) throw err
-          folders.length.should.equal(7)
+
+          folders.length.should.equal(6)
           folders[0].path.should.equal('/')
           folders[1].path.should.equal('/a')
           folders[2].path.should.equal('/a/b')
           folders[3].path.should.equal('/a/b/c')
           folders[4].path.should.equal('/a/b/c/d')
           folders[5].path.should.equal('/a/b/c/d/e')
-          folders[6].path.should.equal('/a/b/c/d/e/f')
           done()
         })
 
